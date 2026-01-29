@@ -1,99 +1,28 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>컨설턴트 프로필</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-
-  <!-- 0. 고정 헤더 -->
-  <header class="profile-header">
-    <h1>김OO 컨설턴트</h1>
-    <p class="subtitle">고1–고3 수시 · 학생부 관리</p>
-  </header>
-
-  <main class="profile">
-
-    <!-- 1. 신뢰 배지 -->
-    <section class="trust-badges">
-      <span class="badge">✔ 기본 정보 확인</span>
-      <span class="badge">✔ 경력 자료 제출</span>
-      <span class="badge">✔ 유사 케이스 경험</span>
-      <p class="badge-desc">
-        본 플랫폼은 자료 제출 여부만 확인하며 상담 결과를 보장하지 않습니다.
-      </p>
-    </section>
-
-    <!-- 2. 한 줄 소개 -->
-    <section class="intro">
-      <p>
-        불안한 상태에서 선택지를 정리해주는 상담을 합니다.
-        내신은 괜찮지만 학생부 방향이 없는 케이스를 주로 다룹니다.
-      </p>
-    </section>
-
-    <!-- 3. 자주 다룬 케이스 -->
-    <section class="cases">
-      <h2>이런 케이스를 자주 다뤘어요</h2>
-      <div class="case-tags">
-        <span>#중3→고1 전환</span>
-        <span>#내신 상위권 · 학생부 약함</span>
-        <span>#수시/정시 고민 초기</span>
-        <span>#재수 여부 판단</span>
-      </div>
-    </section>
-
-    <!-- 4. 상담 방식 -->
-    <section class="consulting-style">
-      <h2>상담 방식</h2>
-      <ul>
-        <li><strong>형태:</strong> 1회 상담 / 장기 관리 가능</li>
-        <li><strong>방식:</strong> 화상 · 전화</li>
-        <li><strong>사전 준비:</strong> 간단한 상황 정리 필요</li>
-        <li><strong>커리큘럼 제공:</strong> 상황에 따라 다름</li>
-      </ul>
-    </section>
-
-    <!-- 5. 케이스 경험 -->
-    <section class="case-experience">
-      <h2>상담 사례 요약</h2>
-
-      <div class="case-card">
-        <p class="case-target">대상: 고2 / 수시</p>
-        <p class="case-problem">상황: 방향성 없음, 비교과 부족</p>
-        <p class="case-approach">
-          접근: 현재 활동 정리 → 선택지 비교 → 전략 방향 설명
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>상황 정리 시작하기</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero-card" aria-label="서비스 소개">
+        <div class="eyebrow">학습·입시 컨설턴트 연결</div>
+        <h1 class="hero-title">
+          상담을 받기 전에,<br />
+          우리 아이 상황부터 정리해보세요.
+        </h1>
+        <p class="hero-sub">
+          1분 진단으로 지금 단계에 맞는 상담 방향을 알려드려요.
         </p>
-      </div>
-
-      <div class="case-card">
-        <p class="case-target">대상: 고3 / 정시 고민</p>
-        <p class="case-problem">상황: 수시 유지 vs 정시 전환 갈등</p>
-        <p class="case-approach">
-          접근: 성적 흐름 분석 → 리스크 설명 → 선택 기준 정리
-        </p>
-      </div>
-    </section>
-
-    <!-- 6. 후기 -->
-    <section class="reviews">
-      <h2>후기</h2>
-      <p class="empty">
-        이 컨설턴트는 아직 후기를 수집 중입니다.
-      </p>
-    </section>
-
-  </main>
-
-  <!-- 7. CTA -->
-  <footer class="cta">
-    <button>이 컨설턴트에게 상담 요청</button>
-    <p class="cta-desc">
-      상담 요청 후 일정과 방식은 직접 조율합니다.
-    </p>
-  </footer>
-
-</body>
+        <div class="cta-group">
+          <a class="btn btn-primary" href="diagnosis.html">상황 정리 시작하기</a>
+          <a class="link-sub" href="profile.html">컨설턴트 둘러보기</a>
+        </div>
+      </section>
+    </main>
+    <script src="main.js"></script>
+  </body>
 </html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>상황 정리 진단</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="no-scroll">
+    <main class="diagnosis-page" id="diagnosis">
+      <header class="diagnosis-header">
+        <button class="btn btn-outline" type="button" id="backBtn">뒤로</button>
+        <button class="skip-btn" type="button" id="skipBtn">건너뛰기</button>
+      </header>
+
+      <div class="progress-track" aria-label="진행률">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <section class="question-card" aria-live="polite">
+        <h1 class="question-title" id="questionTitle"></h1>
+        <div class="option-list" id="optionList"></div>
+        <div class="diagnosis-actions">
+          <button class="btn btn-primary btn-disabled" type="button" id="nextBtn">
+            다음
+          </button>
+        </div>
+      </section>
+    </main>
+    <script src="main.js"></script>
+  </body>
+</html>
