@@ -117,14 +117,56 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  min-height: 48px;
+  margin-bottom: 10px;
+}
+
+.diagnosis-back {
+  width: auto;
+  padding: 8px 10px;
+  height: 40px;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  box-shadow: none;
+}
+
+.diagnosis-back .back-icon {
+  font-size: 14px;
+  line-height: 1;
 }
 
 .skip-btn {
-  font-size: 13px;
-  color: var(--muted);
-  padding: 6px 8px;
+  width: auto;
+  padding: 8px 10px;
+  height: 40px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #7a8496;
+  border: none;
+  background: transparent;
+  white-space: nowrap;
   border-radius: 8px;
+}
+
+.diagnosis-header .btn-outline {
+  border: 1px solid transparent;
+  background: transparent;
+}
+
+.diagnosis-header .btn:focus-visible,
+.skip-btn:focus-visible {
+  outline: none;
+  background: #edf1f8;
+}
+
+.diagnosis-header .btn:hover,
+.skip-btn:hover {
+  background: #f2f5fb;
 }
 
 .progress-track {
