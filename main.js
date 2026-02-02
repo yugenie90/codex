@@ -129,55 +129,92 @@ const initResult = () => {
 
   const goalIndex = parsed?.answers?.goal;
   const stageIndex = parsed?.answers?.stage;
+  const supportIndex = parsed?.answers?.support;
+  const timeIndex = parsed?.answers?.time;
+  const formatIndex = parsed?.answers?.format;
 
-  const goalMessages = [
-    {
-      kicker: "진학 흐름을 정리하는 단계예요",
-      title: "전형 흐름을 함께 보는 상담이 잘 맞을 수 있어요",
-    },
-    {
-      kicker: "학습 루틴을 다시 잡아야 하는 시점이에요",
-      title: "학습 방향 재정리 상담이 어울려요",
-    },
-    {
-      kicker: "학년 전환 대비가 중요한 시점이에요",
-      title: "전환 계획을 함께 세우는 상담이 도움될 수 있어요",
-    },
-    {
-      kicker: "상황 정리가 먼저 필요한 단계예요",
-      title: "현재 위치부터 함께 정리해보는 상담이 좋아요",
-    },
+  const goalKicker = [
+    "진학 흐름을 정리하는 단계예요",
+    "학습 루틴을 다시 잡아야 하는 시점이에요",
+    "학년 전환 대비가 중요한 시점이에요",
+    "상황 정리가 먼저 필요한 단계예요",
   ];
 
-  const stageMessages = [
-    {
-      kicker: "학습 계획을 세울 준비 단계예요",
-      title: "로드맵을 함께 잡아보는 상담이 적합해요",
-    },
-    {
-      kicker: "전형/진로 선택을 앞두고 있어요",
-      title: "선택지를 정리하는 상담이 도움이 될 수 있어요",
-    },
-    {
-      kicker: "목표를 실행으로 옮기는 단계예요",
-      title: "실행 전략을 다듬는 상담이 어울려요",
-    },
-    {
-      kicker: "상담 필요 여부부터 확인하는 단계예요",
-      title: "현 상황을 점검하는 상담이 좋아요",
-    },
+  const goalTitle = [
+    "전형 흐름을 함께 보는 상담이 잘 맞을 수 있어요",
+    "학습 방향 재정리 상담이 어울려요",
+    "전환 계획을 함께 세우는 상담이 도움될 수 있어요",
+    "현재 위치부터 함께 정리해보는 상담이 좋아요",
   ];
 
-  let message = null;
-  if (typeof goalIndex === "number") {
-    message = goalMessages[goalIndex] || null;
-  } else if (typeof stageIndex === "number") {
-    message = stageMessages[stageIndex] || null;
+  const stageKicker = [
+    "학습 계획을 세울 준비 단계예요",
+    "전형/진로 선택을 앞두고 있어요",
+    "목표를 실행으로 옮기는 단계예요",
+    "상담 필요 여부부터 확인하는 단계예요",
+  ];
+
+  const stageTitle = [
+    "로드맵을 함께 잡아보는 상담이 적합해요",
+    "선택지를 정리하는 상담이 도움이 될 수 있어요",
+    "실행 전략을 다듬는 상담이 어울려요",
+    "현 상황을 점검하는 상담이 좋아요",
+  ];
+
+  const supportKicker = [
+    "학습 루틴 정리가 특히 중요해요",
+    "진학 전략을 정리할 타이밍이에요",
+    "학교 생활 방향을 정리하는 데 도움을 받을 수 있어요",
+    "부모 역할 가이드를 함께 잡아볼 수 있어요",
+  ];
+
+  const supportTitle = [
+    "학습 루틴 재정비 중심 상담이 좋아요",
+    "진학 전략 정리에 초점을 둔 상담이 어울려요",
+    "학교 생활/활동 방향을 함께 정리하는 상담이 적합해요",
+    "부모 역할 가이드를 포함한 상담이 도움이 될 수 있어요",
+  ];
+
+  const timePhrase = [
+    "지금 바로 상담을 고려 중이에요",
+    "1~2달 내 상담을 계획 중이에요",
+    "다음 학기 전 정리가 필요해요",
+    "상황을 보며 결정하려고 해요",
+  ];
+
+  const formatPhrase = [
+    "온라인 상담 기준으로 맞춰볼게요",
+    "오프라인 상담 기준으로 맞춰볼게요",
+    "상담 방식은 유연하게 조정할 수 있어요",
+    "상담 방식을 함께 결정해볼 수 있어요",
+  ];
+
+  const primaryKicker =
+    (typeof goalIndex === "number" && goalKicker[goalIndex]) ||
+    (typeof stageIndex === "number" && stageKicker[stageIndex]) ||
+    "진단 결과를 바탕으로";
+
+  const primaryTitle =
+    (typeof goalIndex === "number" && goalTitle[goalIndex]) ||
+    (typeof supportIndex === "number" && supportTitle[supportIndex]) ||
+    (typeof stageIndex === "number" && stageTitle[stageIndex]) ||
+    "이런 상담이 잘 맞을 수 있어요";
+
+  const kickerParts = [primaryKicker];
+  if (typeof supportIndex === "number" && supportKicker[supportIndex]) {
+    kickerParts.push(supportKicker[supportIndex]);
+  }
+  if (typeof timeIndex === "number" && timePhrase[timeIndex]) {
+    kickerParts.push(timePhrase[timeIndex]);
   }
 
-  if (!message) return;
-  kickerEl.textContent = message.kicker;
-  titleEl.textContent = message.title;
+  const titleParts = [primaryTitle];
+  if (typeof formatIndex === "number" && formatPhrase[formatIndex]) {
+    titleParts.push(formatPhrase[formatIndex]);
+  }
+
+  kickerEl.textContent = kickerParts.join(" · ");
+  titleEl.textContent = titleParts.join(" ");
 };
 
 document.addEventListener("DOMContentLoaded", initDiagnosis);
