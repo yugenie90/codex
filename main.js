@@ -134,10 +134,10 @@ const initResult = () => {
   const formatIndex = parsed?.answers?.format;
 
   const goalKicker = [
-    "진학 흐름을 정리하는 단계예요",
-    "학습 루틴을 다시 잡아야 하는 시점이에요",
-    "학년 전환 대비가 중요한 시점이에요",
-    "상황 정리가 먼저 필요한 단계예요",
+    "진학 흐름 정리 단계예요",
+    "학습 루틴 재정비 단계예요",
+    "학년 전환 대비 단계예요",
+    "상황 정리가 우선이에요",
   ];
 
   const goalTitle = [
@@ -148,10 +148,10 @@ const initResult = () => {
   ];
 
   const stageKicker = [
-    "학습 계획을 세울 준비 단계예요",
-    "전형/진로 선택을 앞두고 있어요",
-    "목표를 실행으로 옮기는 단계예요",
-    "상담 필요 여부부터 확인하는 단계예요",
+    "학습 계획 준비 단계예요",
+    "전형/진로 선택 단계예요",
+    "실행 전략 점검 단계예요",
+    "상담 필요 여부 점검 단계예요",
   ];
 
   const stageTitle = [
@@ -162,10 +162,10 @@ const initResult = () => {
   ];
 
   const supportKicker = [
-    "학습 루틴 정리가 특히 중요해요",
-    "진학 전략을 정리할 타이밍이에요",
-    "학교 생활 방향을 정리하는 데 도움을 받을 수 있어요",
-    "부모 역할 가이드를 함께 잡아볼 수 있어요",
+    "학습 루틴 정리가 중요해요",
+    "진학 전략 정리가 필요해요",
+    "학교 생활 방향 정리가 필요해요",
+    "부모 역할 가이드가 필요해요",
   ];
 
   const supportTitle = [
@@ -176,10 +176,10 @@ const initResult = () => {
   ];
 
   const timePhrase = [
-    "지금 바로 상담을 고려 중이에요",
+    "지금 상담을 고려 중이에요",
     "1~2달 내 상담 계획이에요",
     "다음 학기 전 정리가 필요해요",
-    "상황을 보며 결정하려고 해요",
+    "상황을 보며 결정할 예정이에요",
   ];
 
   const formatPhrase = [
@@ -208,9 +208,10 @@ const initResult = () => {
   const formatSuffix =
     (typeof formatIndex === "number" && formatPhrase[formatIndex]) || "";
 
-  kickerEl.textContent = secondaryKicker
+  const kickerText = secondaryKicker
     ? `${primaryKicker} · ${secondaryKicker}`
     : primaryKicker;
+  kickerEl.textContent = `${kickerText}.`;
   titleEl.textContent = formatSuffix
     ? `${primaryTitle} ${formatSuffix}`
     : primaryTitle;
