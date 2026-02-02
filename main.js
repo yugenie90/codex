@@ -112,4 +112,73 @@ const initDiagnosis = () => {
   renderQuestion();
 };
 
+const initResult = () => {
+  const kickerEl = document.getElementById("resultKicker");
+  const titleEl = document.getElementById("resultTitle");
+  if (!kickerEl || !titleEl) return;
+
+  const raw = localStorage.getItem("diagnosisAnswers");
+  if (!raw) return;
+
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (error) {
+    return;
+  }
+
+  const goalIndex = parsed?.answers?.goal;
+  const stageIndex = parsed?.answers?.stage;
+
+  const goalMessages = [
+    {
+      kicker: "진학 흐름을 정리하는 단계예요",
+      title: "전형 흐름을 함께 보는 상담이 잘 맞을 수 있어요",
+    },
+    {
+      kicker: "학습 루틴을 다시 잡아야 하는 시점이에요",
+      title: "학습 방향 재정리 상담이 어울려요",
+    },
+    {
+      kicker: "학년 전환 대비가 중요한 시점이에요",
+      title: "전환 계획을 함께 세우는 상담이 도움될 수 있어요",
+    },
+    {
+      kicker: "상황 정리가 먼저 필요한 단계예요",
+      title: "현재 위치부터 함께 정리해보는 상담이 좋아요",
+    },
+  ];
+
+  const stageMessages = [
+    {
+      kicker: "학습 계획을 세울 준비 단계예요",
+      title: "로드맵을 함께 잡아보는 상담이 적합해요",
+    },
+    {
+      kicker: "전형/진로 선택을 앞두고 있어요",
+      title: "선택지를 정리하는 상담이 도움이 될 수 있어요",
+    },
+    {
+      kicker: "목표를 실행으로 옮기는 단계예요",
+      title: "실행 전략을 다듬는 상담이 어울려요",
+    },
+    {
+      kicker: "상담 필요 여부부터 확인하는 단계예요",
+      title: "현 상황을 점검하는 상담이 좋아요",
+    },
+  ];
+
+  let message = null;
+  if (typeof goalIndex === "number") {
+    message = goalMessages[goalIndex] || null;
+  } else if (typeof stageIndex === "number") {
+    message = stageMessages[stageIndex] || null;
+  }
+
+  if (!message) return;
+  kickerEl.textContent = message.kicker;
+  titleEl.textContent = message.title;
+};
+
 document.addEventListener("DOMContentLoaded", initDiagnosis);
+document.addEventListener("DOMContentLoaded", initResult);
