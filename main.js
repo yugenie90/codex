@@ -177,16 +177,16 @@ const initResult = () => {
 
   const timePhrase = [
     "지금 바로 상담을 고려 중이에요",
-    "1~2달 내 상담을 계획 중이에요",
+    "1~2달 내 상담 계획이에요",
     "다음 학기 전 정리가 필요해요",
     "상황을 보며 결정하려고 해요",
   ];
 
   const formatPhrase = [
-    "온라인 상담 기준으로 맞춰볼게요",
-    "오프라인 상담 기준으로 맞춰볼게요",
-    "상담 방식은 유연하게 조정할 수 있어요",
-    "상담 방식을 함께 결정해볼 수 있어요",
+    "온라인 기준으로 맞춰볼게요",
+    "오프라인 기준으로 맞춰볼게요",
+    "상담 방식은 유연하게 조정해요",
+    "상담 방식을 함께 결정해요",
   ];
 
   const primaryKicker =
@@ -200,21 +200,20 @@ const initResult = () => {
     (typeof stageIndex === "number" && stageTitle[stageIndex]) ||
     "이런 상담이 잘 맞을 수 있어요";
 
-  const kickerParts = [primaryKicker];
-  if (typeof supportIndex === "number" && supportKicker[supportIndex]) {
-    kickerParts.push(supportKicker[supportIndex]);
-  }
-  if (typeof timeIndex === "number" && timePhrase[timeIndex]) {
-    kickerParts.push(timePhrase[timeIndex]);
-  }
+  const secondaryKicker =
+    (typeof supportIndex === "number" && supportKicker[supportIndex]) ||
+    (typeof timeIndex === "number" && timePhrase[timeIndex]) ||
+    "";
 
-  const titleParts = [primaryTitle];
-  if (typeof formatIndex === "number" && formatPhrase[formatIndex]) {
-    titleParts.push(formatPhrase[formatIndex]);
-  }
+  const formatSuffix =
+    (typeof formatIndex === "number" && formatPhrase[formatIndex]) || "";
 
-  kickerEl.textContent = kickerParts.join(" · ");
-  titleEl.textContent = titleParts.join(" ");
+  kickerEl.textContent = secondaryKicker
+    ? `${primaryKicker} · ${secondaryKicker}`
+    : primaryKicker;
+  titleEl.textContent = formatSuffix
+    ? `${primaryTitle} ${formatSuffix}`
+    : primaryTitle;
 };
 
 document.addEventListener("DOMContentLoaded", initDiagnosis);
