@@ -1,18 +1,18 @@
 const diagnosisQuestions = [
   {
     id: "goal",
-    title: "지금 가장 정리하고 싶은 상담 방향은 무엇인가요?",
+    title: "지금 가장 고민인 부분은 무엇인가요?",
     options: ["진학/전형 흐름 파악", "학습 방향 재정리", "학교·학년 전환 대비", "아직 잘 모르겠어요"],
   },
   {
     id: "stage",
-    title: "현재 아이의 상황과 가장 가까운 설명은 무엇인가요?",
+    title: "현재 학생의 상황과 가장 가까운 설명은 무엇인가요?",
     options: ["학습 계획이 필요한 단계", "전형/진로 선택이 막막한 단계", "목표는 있지만 실행이 어려운 단계", "상담이 필요한지부터 확인 중"],
   },
   {
     id: "support",
     title: "가장 도움받고 싶은 영역은 어디인가요?",
-    options: ["학습 루틴 정리", "진학 전략 정리", "학교 생활/활동 방향", "부모 역할 가이드"],
+    options: ["국어", "영어", "수학", "탐구과목"],
   },
   {
     id: "time",
@@ -112,10 +112,125 @@ const initDiagnosis = () => {
   renderQuestion();
 };
 
+const buildResultCopy = (answers = {}) => {
+  const goalEyebrowMap = [
+    "진학/전형 흐름을 정리할 타이밍이에요",
+    "학습 방향을 재정비할 시점이에요",
+    "학교·학년 전환을 대비할 때예요",
+    "현재 상황부터 차근히 정리해봐요",
+  ];
+
+  const stageEyebrowMap = [
+    "학습 계획의 큰 그림을 잡는 단계예요",
+    "진로/전형 선택지를 정리하는 단계예요",
+    "목표는 있지만 실행을 다듬는 단계예요",
+    "상담 필요성을 점검하는 단계예요",
+  ];
+
+  const goalHeadlineMap = [
+    "진학/전형 흐름 정리 상담이",
+    "학습 방향 재정리 상담이",
+    "학교·학년 전환 대비 상담이",
+    "현 상황 정리 상담이",
+  ];
+
+  const stageHeadlineFallback = [
+    "학습 계획 설계 상담이",
+    "진로/전형 선택 상담이",
+    "실행 전략 점검 상담이",
+    "현 상황 점검 상담이",
+  ];
+
+  const stageCopyMap = [
+    {
+      lead: "학습 계획의 우선순위를 함께 세우는 접근이 필요해요.",
+      bullets: [
+        "현재 학습 루틴과 목표 수준을 먼저 정리해요.",
+        "실행 가능한 계획을 짧게 쪼개서 시작해요.",
+      ],
+    },
+    {
+      lead: "전형/진로 선택지를 구조화하는 정리가 중요해요.",
+      bullets: [
+        "가능한 전형을 분류해 비교 기준을 만들어요.",
+        "필수 준비 항목을 체크리스트로 정리해요.",
+      ],
+    },
+    {
+      lead: "목표와 실행 사이의 간격을 줄이는 전략이 필요해요.",
+      bullets: [
+        "현재 실천을 막는 요인을 먼저 파악해요.",
+        "주간 목표를 현실적인 루틴으로 설계해요.",
+      ],
+    },
+    {
+      lead: "상담이 필요한지부터 가볍게 점검하는 흐름이 좋아요.",
+      bullets: [
+        "현재 고민의 핵심을 한 문장으로 정리해요.",
+        "상담 범위를 짧게 설정해 부담을 줄여요.",
+      ],
+    },
+  ];
+
+  const formatSuffixMap = [
+    "온라인으로도 충분히 진행할 수 있어요.",
+    "오프라인 중심으로 맞춰볼게요.",
+    "상담 방식은 상황에 맞게 유연하게 정해요.",
+    "상담 방식을 함께 결정해도 좋아요.",
+  ];
+
+  const timePrefixMap = [
+    "지금 바로 상담을 고려 중이에요.",
+    "1~2달 안에 상담을 계획하고 있어요.",
+    "다음 학기 전까지 정리가 필요해요.",
+    "상황을 보며 시점을 정하려고 해요.",
+  ];
+
+  const goalIndex = answers?.goal;
+  const stageIndex = answers?.stage;
+  const timeIndex = answers?.time;
+  const formatIndex = answers?.format;
+
+  const isGoalUnknown = goalIndex === 3;
+  const eyebrow =
+    (isGoalUnknown && typeof stageIndex === "number"
+      ? stageEyebrowMap[stageIndex]
+      : goalEyebrowMap[goalIndex]) || "진단 결과를 바탕으로";
+
+  const headlineStem =
+    (typeof goalIndex === "number" && goalHeadlineMap[goalIndex]) ||
+    (typeof stageIndex === "number" && stageHeadlineFallback[stageIndex]) ||
+    "맞춤 상담이";
+  const formatSuffix =
+    (typeof formatIndex === "number" && formatSuffixMap[formatIndex]) || "";
+  const headline = formatSuffix
+    ? `${headlineStem} 잘 맞을 수 있어요. ${formatSuffix}`
+    : `${headlineStem} 잘 맞을 수 있어요.`;
+
+  const stageCopy =
+    (typeof stageIndex === "number" && stageCopyMap[stageIndex]) ||
+    stageCopyMap[0];
+  const timePrefix =
+    (typeof timeIndex === "number" && timePrefixMap[timeIndex]) || "";
+  const boxLead = timePrefix
+    ? `${timePrefix} ${stageCopy.lead}`
+    : stageCopy.lead;
+
+  return {
+    eyebrow,
+    headline,
+    boxLead,
+    bullets: stageCopy.bullets,
+  };
+};
+
 const initResult = () => {
   const kickerEl = document.getElementById("resultKicker");
   const titleEl = document.getElementById("resultTitle");
-  if (!kickerEl || !titleEl) return;
+  const boxLeadEl = document.getElementById("resultBoxLead");
+  const bullet1El = document.getElementById("resultBullet1");
+  const bullet2El = document.getElementById("resultBullet2");
+  if (!kickerEl || !titleEl || !boxLeadEl || !bullet1El || !bullet2El) return;
 
   const raw = localStorage.getItem("diagnosisAnswers");
   if (!raw) return;
@@ -133,88 +248,22 @@ const initResult = () => {
   const timeIndex = parsed?.answers?.time;
   const formatIndex = parsed?.answers?.format;
 
-  const goalKicker = [
-    "진학 흐름 정리 단계예요",
-    "학습 루틴 재정비 단계예요",
-    "학년 전환 대비 단계예요",
-    "상황 정리가 우선이에요",
+  const copy = buildResultCopy(parsed?.answers);
+  kickerEl.textContent = copy.eyebrow;
+  titleEl.textContent = copy.headline;
+  boxLeadEl.textContent = copy.boxLead;
+  bullet1El.textContent = copy.bullets[0];
+  bullet2El.textContent = copy.bullets[1];
+
+  const examples = [
+    { goal: 0, stage: 1, support: 2, time: 0, format: 0 },
+    { goal: 3, stage: 0, support: 1, time: 2, format: 3 },
+    { goal: 2, stage: 2, support: 0, time: 1, format: 1 },
   ];
-
-  const goalTitle = [
-    "전형 흐름을 함께 보는 상담이 잘 맞을 수 있어요",
-    "학습 방향 재정리 상담이 어울려요",
-    "전환 계획을 함께 세우는 상담이 도움될 수 있어요",
-    "현재 위치부터 함께 정리해보는 상담이 좋아요",
-  ];
-
-  const stageKicker = [
-    "학습 계획 준비 단계예요",
-    "전형/진로 선택 단계예요",
-    "실행 전략 점검 단계예요",
-    "상담 필요 여부 점검 단계예요",
-  ];
-
-  const stageTitle = [
-    "로드맵을 함께 잡아보는 상담이 적합해요",
-    "선택지를 정리하는 상담이 도움이 될 수 있어요",
-    "실행 전략을 다듬는 상담이 어울려요",
-    "현 상황을 점검하는 상담이 좋아요",
-  ];
-
-  const supportKicker = [
-    "학습 루틴 정리가 중요해요",
-    "진학 전략 정리가 필요해요",
-    "학교 생활 방향 정리가 필요해요",
-    "부모 역할 가이드가 필요해요",
-  ];
-
-  const supportTitle = [
-    "학습 루틴 재정비 중심 상담이 좋아요",
-    "진학 전략 정리에 초점을 둔 상담이 어울려요",
-    "학교 생활/활동 방향을 함께 정리하는 상담이 적합해요",
-    "부모 역할 가이드를 포함한 상담이 도움이 될 수 있어요",
-  ];
-
-  const timePhrase = [
-    "지금 상담을 고려 중이에요",
-    "1~2달 내 상담 계획이에요",
-    "다음 학기 전 정리가 필요해요",
-    "상황을 보며 결정할 예정이에요",
-  ];
-
-  const formatPhrase = [
-    "온라인 기준으로 맞춰볼게요",
-    "오프라인 기준으로 맞춰볼게요",
-    "상담 방식은 유연하게 조정해요",
-    "상담 방식을 함께 결정해요",
-  ];
-
-  const primaryKicker =
-    (typeof goalIndex === "number" && goalKicker[goalIndex]) ||
-    (typeof stageIndex === "number" && stageKicker[stageIndex]) ||
-    "진단 결과를 바탕으로";
-
-  const primaryTitle =
-    (typeof goalIndex === "number" && goalTitle[goalIndex]) ||
-    (typeof supportIndex === "number" && supportTitle[supportIndex]) ||
-    (typeof stageIndex === "number" && stageTitle[stageIndex]) ||
-    "이런 상담이 잘 맞을 수 있어요";
-
-  const secondaryKicker =
-    (typeof supportIndex === "number" && supportKicker[supportIndex]) ||
-    (typeof timeIndex === "number" && timePhrase[timeIndex]) ||
-    "";
-
-  const formatSuffix =
-    (typeof formatIndex === "number" && formatPhrase[formatIndex]) || "";
-
-  const kickerText = secondaryKicker
-    ? `${primaryKicker} · ${secondaryKicker}`
-    : primaryKicker;
-  kickerEl.textContent = `${kickerText}.`;
-  titleEl.textContent = formatSuffix
-    ? `${primaryTitle} ${formatSuffix}`
-    : primaryTitle;
+  console.log("[result copy examples]");
+  examples.forEach((example, index) => {
+    console.log(`case ${index + 1}`, buildResultCopy(example));
+  });
 };
 
 document.addEventListener("DOMContentLoaded", initDiagnosis);
