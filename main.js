@@ -172,6 +172,20 @@ const buildResultCopy = (answers = {}) => {
     },
   ];
 
+  const goalLabelMap = [
+    "진학/전형 흐름",
+    "학습 방향 재정리",
+    "학교·학년 전환 대비",
+    "목표 탐색",
+  ];
+
+  const stageActionLabelsMap = [
+    ["루틴 점검", "계획 설계"],
+    ["전형 비교", "진로 선택"],
+    ["실행 점검", "습관 설계"],
+    ["상담 필요성", "핵심 고민 정리"],
+  ];
+
   const formatSuffixMap = [
     "온라인으로도 충분히 진행할 수 있어요.",
     "오프라인 중심으로 맞춰볼게요.",
@@ -179,12 +193,16 @@ const buildResultCopy = (answers = {}) => {
     "상담 방식을 함께 결정해도 좋아요.",
   ];
 
+  const formatLabelMap = ["온라인", "오프라인", "방식 유연", "방식 미정"];
+
   const timePrefixMap = [
     "지금 바로 상담을 고려 중이에요.",
     "1~2달 안에 상담을 계획하고 있어요.",
     "다음 학기 전까지 정리가 필요해요.",
     "상황을 보며 시점을 정하려고 해요.",
   ];
+
+  const timeLabelMap = ["지금 바로", "1~2달 내", "다음 학기 전", ""];
 
   const goalIndex = answers?.goal;
   const stageIndex = answers?.stage;
@@ -216,11 +234,33 @@ const buildResultCopy = (answers = {}) => {
     ? `${timePrefix} ${stageCopy.lead}`
     : stageCopy.lead;
 
+  const labels = [];
+  const goalLabel =
+    (typeof goalIndex === "number" && goalLabelMap[goalIndex]) || "맞춤 상담";
+  labels.push(goalLabel);
+
+  const stageLabels =
+    (typeof stageIndex === "number" && stageActionLabelsMap[stageIndex]) ||
+    stageActionLabelsMap[0];
+  stageLabels.forEach((label) => labels.push(label));
+
+  const formatLabel =
+    (typeof formatIndex === "number" && formatLabelMap[formatIndex]) ||
+    "방식 유연";
+  labels.push(formatLabel);
+
+  const timeLabel =
+    (typeof timeIndex === "number" && timeLabelMap[timeIndex]) || "";
+  if (timeLabel) labels.push(timeLabel);
+
+  const trimmedLabels = labels.filter(Boolean).slice(0, 4);
+  if (trimmedLabels.length === 0) trimmedLabels.push("맞춤 상담");
+
   return {
     eyebrow,
     headline,
     boxLead,
-    bullets: stageCopy.bullets,
+    labels: trimmedLabels,
   };
 };
 
@@ -228,9 +268,8 @@ const initResult = () => {
   const kickerEl = document.getElementById("resultKicker");
   const titleEl = document.getElementById("resultTitle");
   const boxLeadEl = document.getElementById("resultBoxLead");
-  const bullet1El = document.getElementById("resultBullet1");
-  const bullet2El = document.getElementById("resultBullet2");
-  if (!kickerEl || !titleEl || !boxLeadEl || !bullet1El || !bullet2El) return;
+  const chipsEl = document.getElementById("resultChips");
+  if (!kickerEl || !titleEl || !boxLeadEl || !chipsEl) return;
 
   const raw = localStorage.getItem("diagnosisAnswers");
   if (!raw) return;
@@ -252,8 +291,13 @@ const initResult = () => {
   kickerEl.textContent = copy.eyebrow;
   titleEl.textContent = copy.headline;
   boxLeadEl.textContent = copy.boxLead;
-  bullet1El.textContent = copy.bullets[0];
-  bullet2El.textContent = copy.bullets[1];
+  chipsEl.innerHTML = "";
+  copy.labels.forEach((label) => {
+    const chip = document.createElement("span");
+    chip.className = "summary-chip";
+    chip.textContent = label;
+    chipsEl.appendChild(chip);
+  });
 
   const examples = [
     { goal: 0, stage: 1, support: 2, time: 0, format: 0 },
